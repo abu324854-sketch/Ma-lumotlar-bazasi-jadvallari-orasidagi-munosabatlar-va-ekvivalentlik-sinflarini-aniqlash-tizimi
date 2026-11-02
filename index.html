@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekvivalentlik Sinflarini Aniqlash Tizimi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-brand-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-brand-600 rounded-lg">
+                    <i class="fa-solid fa-diagram-project text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide">RelationalEquiv Analytics</h1>
+                    <p class="text-xs text-brand-100">Ma'lumotlar bazasi jadvallari va faktor-to'plamlar analizi</p>
+                </div>
+            </div>
+            <span class="bg-brand-700 text-brand-100 text-xs px-3 py-1 rounded-full border border-brand-500">
+                Discrete Math Engine v1.0
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Panel: Form Input & Configuration -->
+        <section class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-brand-600"></i> Kiruvchi Ma'lumotlar Sozlamasi
+                </h2>
+
+                <!-- Strategy Selection -->
+                <div class="mb-5">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Ekvivalentlik Sharti (Munosabat $R$):</label>
+                    <select id="criterionSelect" onchange="toggleCustomKeyInput()" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 p-2.5 outline-none transition">
+                        <option value="dept">Bir xil Bo'limga tegishlilik (Department ID)</option>
+                        <option value="role">Bir xil Lavozim (Role)</option>
+                        <option value="custom">Ob'ekt Xossasi (JSON Key bo'yicha)</option>
+                    </select>
+                </div>
+
+                <!-- Dynamic Custom Key Input -->
+                <div id="customKeyContainer" class="mb-5 hidden">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">JSON kalit nomi (Property Key):</label>
+                    <input type="text" id="customKey" placeholder="masalan: city" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-brand-500 focus:border-brand-500 p-2.5 outline-none">
+                </div>
+
+                <!-- Input JSON Data -->
+                <div class="mb-5">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium text-slate-700">Obyektlar To'plami ($A$):</label>
+                        <button onclick="loadSampleData()" class="text-xs text-brand-600 hover:text-brand-700 font-medium hover:underline">
+                            Namuna yuklash
+                        </button>
+                    </div>
+                    <textarea id="jsonData" rows="10" class="w-full font-mono text-xs bg-slate-900 text-slate-100 p-3 rounded-lg border border-slate-700 focus:ring-brand-500 focus:border-brand-500 outline-none" placeholder="JSON formatidagi to'plam..."></textarea>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="processEquivalence()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-calculator"></i> Faktor-To'plamni (A/~R) Hisoblash
+            </button>
+        </section>
+
+        <!-- Right Panel: Results & Equivalence Classes -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Mathematical Summary Card -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Munosabat Xossalari & Nazariya</h3>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="block text-xs text-slate-500">Refleksivlik</span>
+                        <span class="text-emerald-600 font-bold text-sm"><i class="fa-solid fa-check"></i> Bajariladi</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="block text-xs text-slate-500">Simmetriklik</span>
+                        <span class="text-emerald-600 font-bold text-sm"><i class="fa-solid fa-check"></i> Bajariladi</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="block text-xs text-slate-500">Tranzitivlik</span>
+                        <span class="text-emerald-600 font-bold text-sm"><i class="fa-solid fa-check"></i> Bajariladi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equivalence Classes View (Factor Set) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex-1 flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-brand-600"></i> Faktor-to'plam $A/\sim R$
+                    </h2>
+                    <span id="classCount" class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full font-medium">
+                        Sinflar soni: 0
+                    </span>
+                </div>
+
+                <!-- Classes Output Area -->
+                <div id="outputArea" class="flex-1 overflow-y-auto max-h-[420px] space-y-4 pr-1">
+                    <div class="text-center py-12 text-slate-400 flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-box-open text-4xl mb-3"></i>
+                        <p class="text-sm">Hisoblash tugmasini bosing. Ekvivalentlik sinflari shu yerda aks etadi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Sample JSON Data
+        const sampleSet = [
+            { id: 1, name: "Ali", dept: "IT", role: "Developer" },
+            { id: 2, name: "Vali", dept: "HR", role: "Recruiter" },
+            { id: 3, name: "Sardor", dept: "IT", role: "DevOps" },
+            { id: 4, name: "Madina", dept: "Finance", role: "Accountant" },
+            { id: 5, name: "Aziza", dept: "HR", role: "Manager" },
+            { id: 6, name: "Nodir", dept: "IT", role: "Developer" }
+        ];
+
+        // Initialize with default sample
+        document.getElementById('jsonData').value = JSON.stringify(sampleSet, null, 2);
+
+        function toggleCustomKeyInput() {
+            const select = document.getElementById('criterionSelect');
+            const customContainer = document.getElementById('customKeyContainer');
+            if (select.value === 'custom') {
+                customContainer.classList.remove('hidden');
+            } else {
+                customContainer.classList.add('hidden');
+            }
+        }
+
+        function loadSampleData() {
+            document.getElementById('jsonData').value = JSON.stringify(sampleSet, null, 2);
+        }
+
+        /**
+         * Core Equivalence Class partition algorithm (Factor Set Generation)
+         */
+        function processEquivalence() {
+            const outputArea = document.getElementById('outputArea');
+            const classCountLabel = document.getElementById('classCount');
+            const rawJson = document.getElementById('jsonData').value;
+            const criterion = document.getElementById('criterionSelect').value;
+            
+            let key = criterion;
+            if (criterion === 'custom') {
+                key = document.getElementById('customKey').value.trim();
+                if (!key) {
+                    alert("Iltimos, JSON kalit nomini kiriting!");
+                    return;
+                }
+            }
+
+            let dataSet = [];
+            try {
+                dataSet = JSON.parse(rawJson);
+                if (!Array.isArray(dataSet)) throw new Error("JSON massiv bo'lishi kerak!");
+            } catch (err) {
+                alert("JSON formatida xatolik: " + err.message);
+                return;
+            }
+
+            // Map/Hash Table algorithm for partitioning into equivalence classes
+            const factorSet = new Map();
+
+            dataSet.forEach(item => {
+                const equivKey = item[key] !== undefined ? String(item[key]) : 'Aniqlanmagan (Undefined)';
+                if (!factorSet.has(equivKey)) {
+                    factorSet.set(equivKey, []);
+                }
+                factorSet.get(equivKey).push(item);
+            });
+
+            // Render Output UI
+            outputArea.innerHTML = '';
+            let classCounter = 0;
+
+            factorSet.forEach((members, classKey) => {
+                classCounter++;
+                const classBox = document.createElement('div');
+                classBox.className = 'border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-white hover:shadow-md transition';
+
+                let membersListHTML = members.map(m => `
+                    <div class="flex items-center justify-between text-xs bg-white p-2.5 rounded-lg border border-slate-200 mb-2">
+                        <span class="font-semibold text-slate-800">${m.name || 'ID: ' + m.id}</span>
+                        <span class="text-slate-500 font-mono">${JSON.stringify(m)}</span>
+                    </div>
+                `).join('');
+
+                classBox.innerHTML = `
+                    <div class="flex items-center justify-between mb-3 border-b border-slate-200 pb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-xs">
+                                ${classCounter}
+                            </span>
+                            <h4 class="font-bold text-slate-800 text-sm">[E]<sub>${classKey}</sub> Sinf</h4>
+                        </div>
+                        <span class="text-xs bg-brand-50 text-brand-700 px-2 py-0.5 rounded border border-brand-100 font-medium">
+                            ${members.length} ta obyekt
+                        </span>
+                    </div>
+                    <div class="pl-2">
+                        ${membersListHTML}
+                    </div>
+                `;
+
+                outputArea.appendChild(classBox);
+            });
+
+            classCountLabel.innerText = `Sinflar soni: ${classCounter}`;
+        }
+    </script>
+</body>
+</html>
