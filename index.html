@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diskret Tuzilmalar: Ekvivalentlik Sinflari va Faktor-To'plam Engine</title>
+    <title>Diskret Matematika: Faktor-To'plam Vizualizatori</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- KaTeX for Math Rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -20,6 +20,7 @@
                         discrete: {
                             50: '#f0f9ff',
                             100: '#e0f2fe',
+                            500: '#0ea5e9',
                             600: '#0284c7',
                             700: '#0369a1',
                             900: '#0c4a6e',
@@ -32,59 +33,76 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Header / Navbar -->
+    <!-- Navbar / Header -->
     <header class="bg-discrete-900 text-white shadow-xl border-b border-discrete-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <div class="p-2.5 bg-discrete-600 rounded-xl shadow-md">
-                    <i class="fa-solid fa-square-root-variable text-2xl text-white"></i>
+                    <i class="fa-solid fa-diagram-nested text-2xl text-white"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-wide">Diskret Tuzilmalar: Faktor-To'plam Analizatori</h1>
-                    <p class="text-xs text-discrete-100">Binor munosabatlar va ob'ektlarni ekvivalentlik sinflari bo'yicha dekompozitsiya qilish</p>
+                    <h1 class="text-xl font-bold tracking-wide">Diskret Tuzilmalar: Faktor-To'plam Engine</h1>
+                    <p class="text-xs text-discrete-100">Ob'ektlarni ekvivalentlik munosabatlari ($R$) bo'yicha dekompozitsiya qilish</p>
                 </div>
             </div>
             <div class="hidden sm:flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-xs font-mono text-slate-300">Formulalar: KaTeX LaTeX</span>
+                <span class="text-xs font-mono text-slate-300">LaTeX KaTeX Active</span>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <!-- Left Panel: Theory & Input -->
-        <section class="lg:col-span-5 flex flex-col gap-6">
+        <!-- Left Panel: Educational Controls & Data Input -->
+        <section class="lg:col-span-5 flex flex-col gap-5">
             
-            <!-- Academic Card -->
+            <!-- Theory & Academic Explanation -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-discrete-700 mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-book-bookmark"></i> Nazariy Qoida (Munosabat $R$)
+                <h3 class="text-xs font-bold uppercase tracking-wider text-discrete-700 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Ekvivalentlik Munosabati $R$ Shartlari
                 </h3>
                 <p class="text-xs text-slate-600 leading-relaxed mb-3">
-                    $A$ to'plamdagi $R$ binor munosabat ekvivalentlik munosabati deyiladi, agar u 3 ta shartni qanoatlantirsa:
+                    $A$ to'plamdagi binor munosabat $R$ ekvivalentlik munosabati deyiladi, agar u quyidagi 3 shartni bajarishi isbotlansa:
                 </p>
                 <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                    <div title="\forall x \in A: xRx"><strong class="block text-slate-800">1. Refleksiv</strong>$x R x$</div>
-                    <div title="xRy \implies yRx"><strong class="block text-slate-800">2. Simmetrik</strong>$x R y \Rightarrow y R x$</div>
-                    <div title="xRy \land yRz \implies xRz"><strong class="block text-slate-800">3. Tranzitiv</strong>$x R y \land y R z \Rightarrow x R z$</div>
+                    <div title="Refleksivlik"><strong class="block text-slate-800 text-[11px]">Refleksiv</strong>$x R x$</div>
+                    <div title="Simmetriklik"><strong class="block text-slate-800 text-[11px]">Simmetrik</strong>$x R y \Rightarrow y R x$</div>
+                    <div title="Tranzitivlik"><strong class="block text-slate-800 text-[11px]">Tranzitiv</strong>$xRy \land yRz \Rightarrow xRz$</div>
                 </div>
             </div>
 
-            <!-- Configuration & Input -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex-1 flex flex-col justify-between">
+            <!-- Input & Configuration Card -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex-1 flex flex-col justify-between">
                 <div>
-                    <h2 class="text-md font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-discrete-600"></i> Munosabat Shartlari va To'plam
+                    <h2 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-discrete-600"></i> To'plam va Munosabat Sozlamasi
                     </h2>
 
-                    <!-- Criterion Selection -->
+                    <!-- Presets -->
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tayyor Namunalar (Presets):</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="loadPreset('company')" class="bg-slate-100 hover:bg-discrete-50 hover:text-discrete-700 text-slate-700 text-xs py-2 px-2 rounded-lg border border-slate-200 font-medium transition">
+                                Xodimlar
+                            </button>
+                            <button onclick="loadPreset('students')" class="bg-slate-100 hover:bg-discrete-50 hover:text-discrete-700 text-slate-700 text-xs py-2 px-2 rounded-lg border border-slate-200 font-medium transition">
+                                Talabalar
+                            </button>
+                            <button onclick="loadPreset('numbers')" class="bg-slate-100 hover:bg-discrete-50 hover:text-discrete-700 text-slate-700 text-xs py-2 px-2 rounded-lg border border-slate-200 font-medium transition">
+                                Modulo (Math)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Equivalence Criterion -->
                     <div class="mb-4">
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Ekvivalentlik Predikati $P(x, y)$:</label>
-                        <select id="criterionSelect" onchange="toggleCustomKeyInput()" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-lg focus:ring-discrete-600 focus:border-discrete-600 p-2.5 outline-none">
-                            <option value="dept">x.dept == y.dept (Bir xil Bo'lim)</option>
-                            <option value="role">x.role == y.role (Bir xil Lavozim)</option>
+                        <select id="criterionSelect" onchange="toggleCustomKeyInput()" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-lg focus:ring-discrete-600 p-2.5 outline-none">
+                            <option value="dept">x.dept == y.dept (Bo'lim bo'yicha guruhlash)</option>
+                            <option value="role">x.role == y.role (Lavozim bo'yicha guruhlash)</option>
+                            <option value="course">x.course == y.course (Bosqich/Kurs bo'yicha)</option>
                             <option value="mod3">x.id ≡ y.id (mod 3) (Qoldiqdoshlik munosabati)</option>
                             <option value="custom">Ixtiyoriy atribut bo'yicha (JSON Key)</option>
                         </select>
@@ -93,46 +111,41 @@
                     <!-- Dynamic Input Key -->
                     <div id="customKeyContainer" class="mb-4 hidden">
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Atribut nomi (Property Key):</label>
-                        <input type="text" id="customKey" placeholder="masalan: level" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-lg p-2.5 outline-none">
+                        <input type="text" id="customKey" placeholder="masalan: city" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-lg p-2.5 outline-none">
                     </div>
 
-                    <!-- JSON Input Area -->
+                    <!-- Input Data Area -->
                     <div class="mb-4">
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-semibold text-slate-700">Kiruvchi To'plam $A = \{x_1, x_2, \dots, x_n\}$:</label>
-                            <button onclick="loadSampleData()" class="text-xs text-discrete-600 hover:underline font-medium">
-                                Namunani tiklash
-                            </button>
-                        </div>
-                        <textarea id="jsonData" rows="9" class="w-full font-mono text-xs bg-slate-900 text-emerald-400 p-3 rounded-xl border border-slate-700 focus:ring-discrete-600 outline-none"></textarea>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">To'plam Elementlari $A = \{x_1, x_2, \dots, x_n\}$:</label>
+                        <textarea id="jsonData" rows="8" class="w-full font-mono text-xs bg-slate-900 text-emerald-400 p-3 rounded-xl border border-slate-700 focus:ring-discrete-600 outline-none"></textarea>
                     </div>
                 </div>
 
-                <!-- Run Button -->
+                <!-- Calculate Action Button -->
                 <button onclick="computeFactorSet()" class="w-full bg-discrete-600 hover:bg-discrete-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-gears"></i> Faktor-To'plam $A/\sim R$ ni Yaratish
                 </button>
             </div>
         </section>
 
-        <!-- Right Panel: Factor Set Partitioning Output -->
-        <section class="lg:col-span-7 flex flex-col gap-6">
+        <!-- Right Panel: Factor Set Visualization -->
+        <section class="lg:col-span-7 flex flex-col gap-5">
             
-            <!-- Proof & Properties Status -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Munosabat Verifikatsiyasi</h3>
-                <div id="verificationPanel" class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                    <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 text-xs font-medium">
-                        Refleksivlik: <br><strong>$\forall x (x R x)$ ✅</strong>
+            <!-- Mathematical Verification Bar -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Munosabat va Faktor-To'plam Qoidalari</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                    <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 font-medium">
+                        Refleksivlik: <strong>✅</strong>
                     </div>
-                    <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 text-xs font-medium">
-                        Simmetriklik: <br><strong>$xRy \Rightarrow yRx$ ✅</strong>
+                    <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 font-medium">
+                        Simmetriklik: <strong>✅</strong>
                     </div>
-                    <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 text-xs font-medium">
-                        Tranzitivlik: <br><strong>$xRy \land yRz \Rightarrow xRz$ ✅</strong>
+                    <div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 font-medium">
+                        Tranzitivlik: <strong>✅</strong>
                     </div>
-                    <div class="p-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 text-xs font-medium">
-                        Disyunktlik: <br><strong>$E_i \cap E_j = \emptyset$ ✅</strong>
+                    <div class="p-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 font-medium">
+                        Disyunkt: $E_i \cap E_j = \emptyset$ <strong>✅</strong>
                     </div>
                 </div>
             </div>
@@ -142,7 +155,7 @@
                 <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
                     <div>
                         <h2 class="text-md font-bold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-layer-group text-discrete-600"></i> Faktor-To'plam Natijasi
+                            <i class="fa-solid fa-boxes-packing text-discrete-600"></i> Faktor-To'plam Natijasi
                         </h2>
                         <span class="text-xs text-slate-500 font-mono">$A/\sim R = \{[x_1], [x_2], \dots, [x_k]\}$</span>
                     </div>
@@ -151,31 +164,49 @@
                     </span>
                 </div>
 
-                <!-- Classes Output View -->
-                <div id="outputArea" class="flex-1 overflow-y-auto max-h-[440px] space-y-4 pr-1">
+                <!-- Classes Rendering Box -->
+                <div id="outputArea" class="flex-1 overflow-y-auto max-h-[460px] space-y-4 pr-1">
                     <div class="text-center py-16 text-slate-400 flex flex-col items-center justify-center">
-                        <i class="fa-solid fa-diagram-nested text-5xl mb-3 text-slate-300"></i>
-                        <p class="text-sm font-medium">Algoritmni ishga tushirish uchun tugmani bosing.</p>
-                        <p class="text-xs text-slate-400 mt-1">To'plam elementlari kesishmaydigan ekvivalentlik sinflariga ajratiladi.</p>
+                        <i class="fa-solid fa-layer-group text-5xl mb-3 text-slate-300"></i>
+                        <p class="text-sm font-medium">Tugmani bosing yoki namunalardan birini tanlang.</p>
+                        <p class="text-xs text-slate-400 mt-1">Ob'ektlar o'zaro kesishmaydigan ekvivalentlik sinflariga (qutilarga) ajratiladi.</p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- JavaScript Logic (Discrete Mathematics Algorithm Engine) -->
+    <!-- JavaScript Core Logic -->
     <script>
-        // Sample Set A (Objects representing entities with properties)
-        const sampleSet = [
-            { id: 10, name: "Ali", dept: "IT", role: "Developer" },
-            { id: 14, name: "Vali", dept: "HR", role: "Recruiter" },
-            { id: 22, name: "Sardor", dept: "IT", role: "DevOps" },
-            { id: 31, name: "Madina", dept: "Finance", role: "Accountant" },
-            { id: 19, name: "Aziza", dept: "HR", role: "Manager" },
-            { id: 43, name: "Nodir", dept: "IT", role: "Developer" }
-        ];
+        // Preset Datasets
+        const presets = {
+            company: [
+                { id: 1, name: "Ali", dept: "IT", role: "Developer" },
+                { id: 2, name: "Vali", dept: "HR", role: "Recruiter" },
+                { id: 3, name: "Sardor", dept: "IT", role: "DevOps" },
+                { id: 4, name: "Madina", dept: "Finance", role: "Accountant" },
+                { id: 5, name: "Aziza", dept: "HR", role: "Manager" },
+                { id: 6, name: "Nodir", dept: "IT", role: "Developer" }
+            ],
+            students: [
+                { id: 101, name: "Javohir", course: "1-kurs", group: "CS-1" },
+                { id: 102, name: "Malika", course: "2-kurs", group: "CS-2" },
+                { id: 103, name: "Temur", course: "1-kurs", group: "CS-1" },
+                { id: 104, name: "Zuhra", course: "3-kurs", group: "SE-3" },
+                { id: 105, name: "Bekzod", course: "2-kurs", group: "CS-2" }
+            ],
+            numbers: [
+                { id: 10, label: "X_10" },
+                { id: 14, label: "X_14" },
+                { id: 21, label: "X_21" },
+                { id: 33, label: "X_33" },
+                { id: 45, label: "X_45" },
+                { id: 52, label: "X_52" }
+            ]
+        };
 
-        document.getElementById('jsonData').value = JSON.stringify(sampleSet, null, 2);
+        // Initialize Default View
+        document.getElementById('jsonData').value = JSON.stringify(presets.company, null, 2);
 
         function toggleCustomKeyInput() {
             const select = document.getElementById('criterionSelect');
@@ -187,13 +218,22 @@
             }
         }
 
-        function loadSampleData() {
-            document.getElementById('jsonData').value = JSON.stringify(sampleSet, null, 2);
+        function loadPreset(key) {
+            document.getElementById('jsonData').value = JSON.stringify(presets[key], null, 2);
+            
+            // Auto-select relation option based on preset
+            const select = document.getElementById('criterionSelect');
+            if (key === 'company') select.value = 'dept';
+            else if (key === 'students') select.value = 'course';
+            else if (key === 'numbers') select.value = 'mod3';
+
+            toggleCustomKeyInput();
+            computeFactorSet();
         }
 
         /**
-         * Discrete Math Partitioning Algorithm
-         * Computes the equivalence classes forming the Factor Set (A / ~R)
+         * Discrete Mathematics Algorithm:
+         * Partition set A into disjoint equivalence classes forming factor set A/~R
          */
         function computeFactorSet() {
             const outputArea = document.getElementById('outputArea');
@@ -204,26 +244,25 @@
             let dataSet = [];
             try {
                 dataSet = JSON.parse(rawJson);
-                if (!Array.isArray(dataSet)) throw new Error("Kiritilgan to'plam array formatida bo'lishi kerak!");
+                if (!Array.isArray(dataSet)) throw new Error("To'plam array formatida bo'lishi kerak!");
             } catch (err) {
                 alert("JSON formatida xatolik: " + err.message);
                 return;
             }
 
-            // Map hash-structure representing disjoint sets of equivalence classes
+            // Map hash-structure representing factor set partition
             const factorMap = new Map();
 
             dataSet.forEach(element => {
                 let keyVal = "";
                 
-                // Define relation R equivalence evaluation
                 if (criterion === 'mod3') {
-                    keyVal = `(id mod 3) = ${element.id % 3}`;
+                    keyVal = `id mod 3 = ${element.id % 3}`;
                 } else if (criterion === 'custom') {
                     const cKey = document.getElementById('customKey').value.trim();
-                    keyVal = cKey && element[cKey] !== undefined ? `${cKey}: ${element[cKey]}` : 'Undefined';
+                    keyVal = cKey && element[cKey] !== undefined ? `${cKey}: ${element[cKey]}` : 'Aniqlanmagan';
                 } else {
-                    keyVal = element[criterion] !== undefined ? `${criterion}: ${element[criterion]}` : 'Undefined';
+                    keyVal = element[criterion] !== undefined ? `${criterion}: ${element[criterion]}` : 'Aniqlanmagan';
                 }
 
                 if (!factorMap.has(keyVal)) {
@@ -232,18 +271,18 @@
                 factorMap.get(keyVal).push(element);
             });
 
-            // Render Results
+            // Render Output Partition Classes
             outputArea.innerHTML = '';
             let classCounter = 0;
 
             factorMap.forEach((members, keyName) => {
                 classCounter++;
                 const classBox = document.createElement('div');
-                classBox.className = 'border border-slate-200 rounded-xl p-4 bg-slate-50/60 hover:bg-white hover:shadow-md transition';
+                classBox.className = 'border border-slate-200 rounded-xl p-4 bg-slate-50/70 hover:bg-white hover:shadow-md transition';
 
                 const membersHTML = members.map(m => `
-                    <div class="flex items-center justify-between text-xs bg-white p-2 rounded-lg border border-slate-200 mb-1.5 font-mono">
-                        <span class="font-semibold text-slate-800">${m.name || 'ID: ' + m.id}</span>
+                    <div class="flex items-center justify-between text-xs bg-white p-2.5 rounded-lg border border-slate-200 mb-2 font-mono">
+                        <span class="font-bold text-slate-800">${m.name || m.label || 'ID: ' + m.id}</span>
                         <span class="text-slate-500">${JSON.stringify(m)}</span>
                     </div>
                 `).join('');
@@ -255,7 +294,7 @@
                                 E<sub>${classCounter}</sub>
                             </span>
                             <div>
-                                <h4 class="font-bold text-slate-800 text-sm">[${keyName}] Sinflash mezon belgilari</h4>
+                                <h4 class="font-bold text-slate-800 text-sm">[${keyName}] Sinflash mezoni</h4>
                             </div>
                         </div>
                         <span class="text-xs bg-discrete-50 text-discrete-700 px-2.5 py-1 rounded-md border border-discrete-200 font-semibold">
@@ -271,11 +310,14 @@
 
             classCountLabel.innerText = `Quvvati |A/~R| = ${classCounter}`;
             
-            // Re-render LaTeX expressions inside output if needed
+            // Re-render Math expressions if KaTeX loaded
             if (window.renderMathInElement) {
                 renderMathInElement(outputArea);
             }
         }
+
+        // Run initial calculation
+        computeFactorSet();
     </script>
 </body>
 </html>
